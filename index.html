@@ -5,83 +5,75 @@
 <title>Walisson & Beatriz</title>
 
 <style>
-
 body{
-
-background: linear-gradient(#ffe6f0,#ffffff);
-font-family: Arial;
-text-align: center;
-margin:0;
+  background: linear-gradient(#ffe6f0,#ffffff);
+  font-family: Arial;
+  text-align: center;
+  margin:0;
 }
 
 header{
-background:#ff4d88;
-color:white;
-padding:30px;
-font-size:30px;
+  background:#ff4d88;
+  color:white;
+  padding:30px;
+  font-size:30px;
 }
 
 .container{
-padding:40px;
+  padding:40px;
 }
 
 button{
-background:#ff4d88;
-border:none;
-padding:15px;
-color:white;
-font-size:18px;
-border-radius:10px;
-cursor:pointer;
+  background:#ff4d88;
+  border:none;
+  padding:15px;
+  color:white;
+  font-size:18px;
+  border-radius:10px;
+  cursor:pointer;
 }
 
 button:hover{
-background:#ff0066;
+  background:#ff0066;
 }
 
 footer{
-margin-top:50px;
-padding:20px;
-background:#eee;
+  margin-top:50px;
+  padding:20px;
+  background:#eee;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
-❤️ Walisson & Beatriz ❤️
+  ❤️ Walisson & Beatriz ❤️
 </header>
 
 <div class="container">
+  <h1>Bem-vinda ao nosso site</h1>
 
-<h1>Bem-vinda ao nosso site</h1>
+  <p>
+    Esse site foi criado com muito carinho para você.
+  </p>
 
-<p>
-Esse site foi criado com muito carinho para você.
-</p>
+  <button onclick="mensagem()">
+    Clique aqui
+  </button>
 
-<button onclick="mensagem()">
-Clique aqui
-</button>
-
-<p id="msg"></p>
-
+  <p id="msg"></p>
 </div>
 
 <footer>
-Feito com amor por Walisson
+  Feito com amor por Walisson
 </footer>
 
 <script>
-
 function mensagem(){
-document.getElementById("msg").innerHTML =
-"Você é muito especial para mim ❤️";
+  document.getElementById("msg").innerHTML =
+  "Você é muito especial para mim ❤️";
 }
-
 </script>
 
 </body>
