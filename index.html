@@ -1,50 +1,47 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-br">
 <head>
-
-<title>Wallace ❤️ Beatriz</title>
+<meta charset="UTF-8">
+<title>Walisson & Beatriz</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:linear-gradient(45deg,#ff758c,#ff7eb3);
-text-align:center;
+background: linear-gradient(#ffe6f0,#ffffff);
+font-family: Arial;
+text-align: center;
+margin:0;
+}
+
+header{
+background:#ff4d88;
 color:white;
+padding:30px;
+font-size:30px;
 }
 
 .container{
-margin-top:50px;
-}
-
-h1{
-font-size:40px;
-}
-
-.section{
-margin-top:40px;
-background:rgba(255,255,255,0.15);
-padding:20px;
-border-radius:10px;
-width:80%;
-margin-left:auto;
-margin-right:auto;
-}
-
-img{
-width:200px;
-border-radius:10px;
-margin:10px;
+padding:40px;
 }
 
 button{
-padding:10px;
+background:#ff4d88;
 border:none;
-background:#ff2e63;
+padding:15px;
 color:white;
-border-radius:5px;
+font-size:18px;
+border-radius:10px;
 cursor:pointer;
+}
+
+button:hover{
+background:#ff0066;
+}
+
+footer{
+margin-top:50px;
+padding:20px;
+background:#eee;
 }
 
 </style>
@@ -53,113 +50,38 @@ cursor:pointer;
 
 <body>
 
+<header>
+❤️ Walisson & Beatriz ❤️
+</header>
+
 <div class="container">
 
-<h1>Wallace ❤️ Beatriz</h1>
-
-<p>Nosso cantinho especial na internet</p>
-
-</div>
-
-<div class="section">
-
-<h2>💌 Uma mensagem para você</h2>
+<h1>Bem-vinda ao nosso site</h1>
 
 <p>
-Beatriz, desde que você apareceu na minha vida tudo ficou mais bonito.
-Seu sorriso ilumina meus dias e sua presença faz meu coração bater diferente.
-Esse site é só um pequeno espaço para guardar nossa história.
-E se depender de mim, nossa história ainda vai ter muitos capítulos.
+Esse site foi criado com muito carinho para você.
 </p>
 
-</div>
+<button onclick="mensagem()">
+Clique aqui
+</button>
 
-<div class="section">
-
-<h2>📅 Nosso tempo juntos</h2>
-
-<p id="contador"></p>
+<p id="msg"></p>
 
 </div>
 
-<div class="section">
-
-<h2>📸 Nossas fotos</h2>
-
-<input type="file" id="foto">
-
-<button onclick="adicionarFoto()">Adicionar Foto</button>
-
-<div id="galeria"></div>
-
-</div>
-
-<div class="section">
-
-<h2>❤️ Nossa história</h2>
-
-<p>2026 — Quando nos conhecemos</p>
-<p>Primeira conversa especial</p>
-<p>Primeiro encontro</p>
-<p>E muitos momentos ainda por vir...</p>
-
-</div>
-
-<div class="section">
-
-<h2>🎵 Nossa música</h2>
-
-<audio controls autoplay loop>
-
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-
-</audio>
-
-</div>
+<footer>
+Feito com amor por Walisson
+</footer>
 
 <script>
 
-const dataInicio = new Date("2026-01-01")
-
-function atualizarContador(){
-
-const hoje = new Date()
-
-const diff = hoje - dataInicio
-
-const dias = Math.floor(diff/(1000*60*60*24))
-
-document.getElementById("contador").innerText =
-"Estamos vivendo essa história há " + dias + " dias ❤️"
-
-}
-
-setInterval(atualizarContador,1000)
-
-function adicionarFoto(){
-
-const input = document.getElementById("foto")
-
-const file = input.files[0]
-
-const reader = new FileReader()
-
-reader.onload = function(e){
-
-const img = document.createElement("img")
-
-img.src = e.target.result
-
-document.getElementById("galeria").appendChild(img)
-
-}
-
-reader.readAsDataURL(file)
-
+function mensagem(){
+document.getElementById("msg").innerHTML =
+"Você é muito especial para mim ❤️";
 }
 
 </script>
 
 </body>
-
 </html>
