@@ -11,14 +11,18 @@
     }
 
     :root {
-      --rosa-1: #fff5f8;
-      --rosa-2: #fdebf1;
-      --rosa-3: #f8d9e4;
-      --rosa-4: #e98aaa;
-      --rosa-5: #c94f7c;
-      --texto: #4b2c36;
+      --rosa-1: #fff4f8;
+      --rosa-2: #ffd9e6;
+      --rosa-3: #ffc2d6;
+      --rosa-4: #ff91b5;
+      --rosa-5: #d94f84;
+      --lilas: #f0e4ff;
+      --azul: #e6f4ff;
+      --amarelo: #fff6d8;
+      --verde: #e7ffe9;
+      --texto: #4f2d3a;
       --branco: #ffffff;
-      --sombra: 0 10px 30px rgba(0, 0, 0, 0.10);
+      --sombra: 0 10px 26px rgba(0, 0, 0, 0.10);
       --radius: 22px;
     }
 
@@ -27,78 +31,133 @@
       font-family: Arial, sans-serif;
       color: var(--texto);
       background:
-        linear-gradient(rgba(255, 245, 248, 0.82), rgba(253, 235, 241, 0.88)),
+        linear-gradient(rgba(255, 244, 248, 0.84), rgba(255, 228, 237, 0.90)),
         linear-gradient(180deg, #fff7fa 0%, #fdebf1 100%);
       min-height: 100vh;
       overflow-x: hidden;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    #hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .heart-fall {
+      position: absolute;
+      top: -30px;
+      opacity: 0.7;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      user-select: none;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(115vh);
+      }
     }
 
     .container {
-      width: min(1100px, calc(100% - 24px));
+      width: min(1200px, calc(100% - 24px));
       margin: 0 auto;
       position: relative;
       z-index: 2;
+      padding: 18px 0 40px;
     }
 
     .hero {
-      padding: 28px 0 18px;
-    }
-
-    .hero-card {
-      background: rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.75);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.55);
       border-radius: 28px;
+      padding: 28px 18px;
       box-shadow: var(--sombra);
-      padding: 28px 20px;
       text-align: center;
+      border: 1px solid rgba(255,255,255,0.65);
     }
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(28px, 5vw, 44px);
+      font-size: clamp(28px, 5vw, 46px);
     }
 
-    .subtitulo {
-      margin-top: 8px;
-      font-size: 15px;
+    .hero p {
+      margin: 10px 0 0;
       opacity: 0.85;
+      font-size: 15px;
     }
 
     .contador-box {
       display: inline-block;
       margin-top: 18px;
-      background: linear-gradient(135deg, #fff, #ffeaf2);
+      background: linear-gradient(135deg, #fff, #ffe6f0);
+      padding: 12px 22px;
       border-radius: 999px;
-      padding: 12px 20px;
-      box-shadow: 0 6px 18px rgba(201, 79, 124, 0.15);
       font-weight: bold;
-      font-size: 16px;
+      box-shadow: 0 8px 22px rgba(217, 79, 132, 0.18);
     }
 
     .painel {
       margin-top: 18px;
-      background: rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.80);
       backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      box-shadow: var(--sombra);
+      border-radius: 26px;
       padding: 18px;
+      box-shadow: var(--sombra);
     }
 
     .painel h2 {
       margin: 0 0 14px;
-      font-size: 20px;
+      font-size: 21px;
     }
 
-    .controles {
+    .painel-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      align-items: end;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
     }
 
-    .campo {
+    .box {
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--sombra);
       text-align: left;
+      min-height: 150px;
+      border: 1px solid rgba(255,255,255,0.65);
+    }
+
+    .box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .box p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      opacity: 0.85;
+      line-height: 1.45;
+    }
+
+    .box-rosa {
+      background: linear-gradient(135deg, #fff0f5, #ffdbe8);
+    }
+
+    .box-lilas {
+      background: linear-gradient(135deg, #f6efff, #eadcff);
+    }
+
+    .box-azul {
+      background: linear-gradient(135deg, #eef8ff, #dff0ff);
+    }
+
+    .box-amarelo {
+      background: linear-gradient(135deg, #fff9e7, #fff0b8);
     }
 
     .campo label {
@@ -111,16 +170,16 @@
     input[type="file"] {
       width: 100%;
       padding: 10px;
-      background: #fff;
-      border: 1px solid #f1ccd8;
       border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.85);
     }
 
     .acoes {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     button {
@@ -137,73 +196,85 @@
     }
 
     .btn-principal {
-      background: linear-gradient(135deg, var(--rosa-5), var(--rosa-4));
+      background: linear-gradient(135deg, #d94f84, #ff8eb3);
       color: white;
-      box-shadow: 0 8px 18px rgba(201, 79, 124, 0.22);
+      box-shadow: 0 8px 18px rgba(217, 79, 132, 0.25);
     }
 
     .btn-secundario {
-      background: #fff;
-      color: var(--rosa-5);
-      border: 1px solid #f0c8d5;
+      background: white;
+      color: #b2416c;
+      border: 1px solid #f0bfd0;
     }
 
-    .player-box {
-      margin-top: 16px;
-      background: linear-gradient(135deg, #fff, #fff6fa);
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    .topbar-galeria {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    audio {
-      width: 100%;
-      margin-top: 8px;
+    .topbar-galeria h2 {
+      margin: 0;
+      font-size: 22px;
     }
 
     .filtros {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 20px;
-      justify-content: center;
     }
 
     .filter-btn.active {
-      background: linear-gradient(135deg, var(--rosa-5), var(--rosa-4));
+      background: linear-gradient(135deg, #d94f84, #ff8eb3);
       color: white;
     }
 
     .galeria-wrap {
-      margin: 24px 0 40px;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.72);
+      border-radius: 26px;
+      padding: 18px;
+      box-shadow: var(--sombra);
+      min-height: 240px;
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
     }
 
     .gallery-item {
-      background: rgba(255,255,255,0.86);
       border-radius: 22px;
       overflow: hidden;
       box-shadow: var(--sombra);
       transition: transform 0.22s ease, box-shadow 0.22s ease;
+      border: 1px solid rgba(255,255,255,0.7);
     }
 
     .gallery-item:hover {
       transform: translateY(-4px);
-      box-shadow: 0 16px 35px rgba(0,0,0,0.12);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.12);
+    }
+
+    .gallery-item.foto-card {
+      background: linear-gradient(180deg, #fff7fb, #ffe5ef);
+    }
+
+    .gallery-item.video-card {
+      background: linear-gradient(180deg, #f0f8ff, #dff0ff);
     }
 
     .gallery-media {
       width: 100%;
       aspect-ratio: 1 / 1;
-      object-fit: cover;
       display: block;
-      background: #f6dce5;
+      object-fit: cover;
       cursor: pointer;
+      background: #f5dbe5;
     }
 
     video.gallery-media {
@@ -225,27 +296,48 @@
       display: block;
       margin-top: 6px;
       font-size: 13px;
-      opacity: 0.75;
+      opacity: 0.78;
     }
 
     .gallery-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      gap: 8px;
       padding: 0 14px 14px;
+    }
+
+    .mini-btn {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .mini-btn.nav {
+      background: rgba(255,255,255,0.82);
+      color: #6f3150;
+      border: 1px solid rgba(0,0,0,0.06);
     }
 
     .mini-btn.delete {
       background: #fff0f4;
-      color: #c13e6e;
-      border: 1px solid #f2bfd0;
-      padding: 9px 12px;
-      border-radius: 12px;
+      color: #c43f70;
+      border: 1px solid #f1bfd0;
+    }
+
+    .vazio {
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.75);
+      box-shadow: var(--sombra);
+      font-size: 15px;
     }
 
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(25, 10, 18, 0.88);
+      background: rgba(20, 8, 15, 0.88);
       display: none;
       align-items: center;
       justify-content: center;
@@ -258,9 +350,19 @@
     }
 
     .lightbox-inner {
-      max-width: min(1000px, 96vw);
-      max-height: 92vh;
+      width: min(1020px, 96vw);
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .lightbox-stage {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     #lightboxContent img,
@@ -269,6 +371,7 @@
       max-height: 88vh;
       border-radius: 18px;
       box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      background: #111;
     }
 
     #lightboxClose {
@@ -279,51 +382,51 @@
       height: 42px;
       border-radius: 999px;
       background: white;
-      color: #8c3356;
+      color: #8d3558;
       font-size: 18px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+      z-index: 2;
     }
 
-    #hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
+    .lightbox-nav {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.94);
+      color: #8b3157;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .heart-fall {
-      position: absolute;
-      top: -30px;
-      opacity: 0.75;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      user-select: none;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(115vh);
-      }
-    }
-
-    .vazio {
-      text-align: center;
-      padding: 34px 18px;
-      background: rgba(255,255,255,0.75);
-      border-radius: 20px;
-      box-shadow: var(--sombra);
-      font-size: 15px;
-    }
-
-    @media (max-width: 640px) {
-      .hero-card {
-        padding: 22px 14px;
-      }
-
+    @media (max-width: 760px) {
       .gallery {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .lightbox-inner {
+        gap: 8px;
+      }
+
+      .lightbox-nav {
+        width: 42px;
+        height: 42px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-galeria {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filtros {
+        justify-content: center;
       }
     }
   </style>
@@ -334,58 +437,84 @@
 
   <div class="container">
     <section class="hero">
-      <div class="hero-card">
-        <h1>Nosso cantinho ❤️</h1>
-        <div class="subtitulo">Fotos, vídeos, música e lembranças especiais.</div>
-        <div id="contadorDias" class="contador-box">0 dias juntos</div>
-      </div>
+      <h1>Nosso cantinho ❤️</h1>
+      <p>Um lugar só para guardar fotos, vídeos, música e lembranças especiais.</p>
+      <div id="contadorDias" class="contador-box">0 dias juntos</div>
     </section>
 
     <section class="painel">
-      <h2>Adicionar momentos</h2>
+      <h2>Painel do casal</h2>
 
-      <div class="controles">
-        <div class="campo">
-          <label for="mediaUpload">Enviar foto ou vídeo</label>
-          <input type="file" id="mediaUpload" multiple accept="image/*,video/*">
+      <div class="painel-grid">
+        <div class="box box-rosa">
+          <h3>Adicionar fotos e vídeos</h3>
+          <p>Tudo que você enviar já fica arquivado na galeria do site, organizado e sem ficar solto na tela inicial.</p>
+          <div class="campo">
+            <label for="mediaUpload">Escolha fotos ou vídeos</label>
+            <input type="file" id="mediaUpload" multiple accept="image/*,video/*">
+          </div>
         </div>
 
-        <div class="campo">
-          <label for="backgroundUpload">Trocar plano de fundo</label>
-          <input type="file" id="backgroundUpload" accept="image/*">
+        <div class="box box-lilas">
+          <h3>Plano de fundo do casal</h3>
+          <p>Escolha uma foto bonita de vocês para virar o fundo do site.</p>
+          <div class="campo">
+            <label for="backgroundUpload">Enviar foto de fundo</label>
+            <input type="file" id="backgroundUpload" accept="image/*">
+          </div>
+          <div class="acoes">
+            <button id="clearBackgroundBtn" class="btn-secundario" type="button">Remover fundo</button>
+          </div>
         </div>
 
-        <div class="campo">
-          <label for="musicUpload">Escolher música</label>
-          <input type="file" id="musicUpload" accept="audio/*">
+        <div class="box box-azul">
+          <h3>Música do site</h3>
+          <p>Escolha uma música romântica para tocar dentro do site.</p>
+          <div class="campo">
+            <label for="musicUpload">Enviar música</label>
+            <input type="file" id="musicUpload" accept="audio/*">
+          </div>
+          <div class="acoes">
+            <audio id="musicPlayer" controls autoplay loop style="width:100%;"></audio>
+          </div>
+        </div>
+
+        <div class="box box-amarelo">
+          <h3>Galeria arquivada</h3>
+          <p>Use os botões para ver tudo, só fotos ou só vídeos. Dentro da visualização você também consegue passar para o próximo item.</p>
+          <div class="acoes">
+            <button class="filter-btn btn-principal active" data-filter="all" type="button">Ver tudo</button>
+            <button class="filter-btn btn-secundario" data-filter="foto" type="button">Ver fotos</button>
+            <button class="filter-btn btn-secundario" data-filter="video" type="button">Ver vídeos</button>
+          </div>
         </div>
       </div>
 
-      <div class="acoes">
-        <button id="clearBackgroundBtn" class="btn-secundario" type="button">Remover fundo</button>
+      <div class="topbar-galeria">
+        <h2>Galeria do casal</h2>
+        <div class="filtros">
+          <button class="filter-btn btn-principal active" data-filter="all" type="button">Tudo</button>
+          <button class="filter-btn btn-secundario" data-filter="foto" type="button">Fotos</button>
+          <button class="filter-btn btn-secundario" data-filter="video" type="button">Vídeos</button>
+        </div>
       </div>
 
-      <div class="player-box">
-        <strong>Música do site</strong>
-        <audio id="musicPlayer" controls autoplay loop></audio>
+      <div class="galeria-wrap">
+        <div id="galleryGrid" class="gallery"></div>
       </div>
-
-      <div class="filtros">
-        <button class="filter-btn btn-secundario active" data-filter="all" type="button">Todos</button>
-        <button class="filter-btn btn-secundario" data-filter="foto" type="button">Fotos</button>
-        <button class="filter-btn btn-secundario" data-filter="video" type="button">Vídeos</button>
-      </div>
-    </section>
-
-    <section class="galeria-wrap">
-      <div id="galleryGrid" class="gallery"></div>
     </section>
   </div>
 
   <div id="lightbox" class="lightbox">
     <div class="lightbox-inner">
-      <button id="lightboxClose" type="button">✕</button>
-      <div id="lightboxContent"></div>
+      <button id="lightboxPrev" class="lightbox-nav" type="button">‹</button>
+
+      <div class="lightbox-stage">
+        <button id="lightboxClose" type="button">✕</button>
+        <div id="lightboxContent"></div>
+      </div>
+
+      <button id="lightboxNext" class="lightbox-nav" type="button">›</button>
     </div>
   </div>
 
