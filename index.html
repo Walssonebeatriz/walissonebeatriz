@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Wallace ❤️ Beatriz</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#ffe6ec;
+}
+
+h1{
+color:#ff2e63;
+}
+
+button{
+padding:10px;
+background:#ff2e63;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Wallace ❤️ Beatriz</h1>
+
+<p>Nosso cantinho na internet 💗</p>
+
+<input id="msg" placeholder="Mensagem para Beatriz">
+
+<button onclick="enviarMensagem()">Enviar</button>
+
+<div id="mensagens"></div>
+
+<script>
+
+function enviarMensagem(){
+
+const texto=document.getElementById("msg").value
+
+const area=document.getElementById("mensagens")
+
+const p=document.createElement("p")
+
+p.innerText=texto
+
+area.appendChild(p)
+
+}
+
+</script>
+
+</body>
+
+</html>
