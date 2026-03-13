@@ -1,80 +1,602 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Walisson & Beatriz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walisson & Beatriz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
-body{
-  background: linear-gradient(#ffe6f0,#ffffff);
-  font-family: Arial;
-  text-align: center;
-  margin:0;
-}
+    :root {
+      --rosa: #ff4f88;
+      --rosa-escuro: #e63d74;
+      --rosa-claro: #fff0f5;
+      --lavanda: #f7e6ee;
+      --branco: #ffffff;
+      --texto: #4a2d36;
+      --sombra: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --borda: 18px;
+    }
 
-header{
-  background:#ff4d88;
-  color:white;
-  padding:30px;
-  font-size:30px;
-}
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #fdebf1 0%, #f8e0e8 100%);
+      color: var(--texto);
+      min-height: 100vh;
+    }
 
-.container{
-  padding:40px;
-}
+    header {
+      background: linear-gradient(90deg, var(--rosa), #ff6fa0);
+      color: white;
+      text-align: center;
+      padding: 18px 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      box-shadow: var(--sombra);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
 
-button{
-  background:#ff4d88;
-  border:none;
-  padding:15px;
-  color:white;
-  font-size:18px;
-  border-radius:10px;
-  cursor:pointer;
-}
+    .hero {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 36px 20px 10px;
+    }
 
-button:hover{
-  background:#ff0066;
-}
+    .hero-box {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+      border-radius: 28px;
+      padding: 38px 26px;
+      box-shadow: var(--sombra);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
 
-footer{
-  margin-top:50px;
-  padding:20px;
-  background:#eee;
-}
-</style>
+    .mini {
+      display: inline-block;
+      background: #ffe2eb;
+      color: var(--rosa-escuro);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.25s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--rosa);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--rosa-escuro);
+      transform: translateY(-2px);
+    }
+
+    .btn-soft {
+      background: white;
+      color: var(--rosa-escuro);
+      box-shadow: var(--sombra);
+    }
+
+    .btn-soft:hover {
+      transform: translateY(-2px);
+    }
+
+    .section {
+      max-width: 1150px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--sombra);
+      text-align: left;
+      transition: 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: #ffe5ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      line-height: 1.6;
+      font-size: 0.96rem;
+      margin-bottom: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .timeline-item {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 18px 20px;
+      box-shadow: var(--sombra);
+      border-left: 6px solid var(--rosa);
+    }
+
+    .timeline-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--rosa-escuro);
+    }
+
+    .gallery-wrap {
+      background: rgba(255,255,255,0.85);
+      border-radius: 28px;
+      box-shadow: var(--sombra);
+      padding: 24px;
+    }
+
+    .gallery-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .toolbar-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill {
+      padding: 10px 16px;
+      background: #ffe6ee;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--rosa-escuro);
+    }
+
+    .pill.active {
+      background: var(--rosa);
+      color: white;
+    }
+
+    .upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      background: var(--rosa);
+      color: white;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .upload-label input {
+      display: none;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+    }
+
+    .gallery-media {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      background: #f4dce4;
+    }
+
+    .gallery-caption {
+      padding: 14px;
+      text-align: left;
+    }
+
+    .gallery-caption h4 {
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .gallery-caption span {
+      font-size: 0.9rem;
+      color: #86656d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 26px 15px 36px;
+      color: #805660;
+    }
+
+    .heart {
+      color: var(--rosa-escuro);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      .hero-box {
+        padding: 28px 18px;
+      }
+
+      .gallery-media {
+        height: 210px;
+      }
+    }
+  
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .heart-fall {
+      position: absolute;
+      top: -10vh;
+      font-size: 18px;
+      animation: cair linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes cair {
+      to {
+        transform: translateY(120vh);
+        opacity: 0.2;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="hearts" id="hearts"></div>
+  <header>💖 Walisson &amp; Beatriz 💖</header>
 
-<header>
-  ❤️ Walisson & Beatriz ❤️
-</header>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-box">
+        <div class="mini">Nosso cantinho especial</div>
+        <h1>Começando a sua história de amor...</h1>
+        <p>
+          Aqui ficam guardados os sorrisos, os abraços, as surpresas, os vídeos engraçados,
+          as fotos favoritas e cada lembrança que faz o coração bater mais forte.
+          Um espaço romântico, leve e cheio de vocês.
+        </p>
 
-<div class="container">
-  <h1>Bem-vinda ao nosso site</h1>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#galeria">📷 Ver fotos</a>
+          <a class="btn btn-soft" href="#momentos">✨ Nossa história</a>
+        </div>
+      </div>
+    </section>
 
-  <p>
-    Esse site foi criado com muito carinho para você.
-  </p>
-<img src="foto.jpg" alt="Nossa foto" class="foto">
-  <button onclick="mensagem()">
-    Clique aqui
-  </button>
+    <section class="section">
+      <div class="section-title">
+        <h2>Caixinhas da tela inicial</h2>
+        <p>
+          Organizei a entrada do site com atalhos bonitos e românticos para deixar tudo fácil de acessar.
+        </p>
+      </div>
 
-  <p id="msg"></p>
-</div>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">📸</div>
+          <h3>Adicionar fotos</h3>
+          <p>Escolha novas imagens e elas aparecem na galeria logo abaixo, organizadas no site.</p>
+          <label class="upload-label">
+            ➕ Escolher fotos
+            <input type="file" id="photoUpload" accept="image/*" multiple>
+          </label>
+        </div>
 
-<footer>
-  Feito com amor por Walisson
-</footer>
+        <div class="card">
+          <div class="icon">🖼️</div>
+          <h3>Ver fotos</h3>
+          <p>Ao clicar aqui, a pessoa é levada para a parte da galeria onde as memórias ficam guardadas.</p>
+          <a class="btn btn-primary" href="#galeria">Abrir galeria</a>
+        </div>
 
-<script>
-function mensagem(){
-  document.getElementById("msg").innerHTML =
-  "Você é muito especial para mim ❤️";
-}
-</script>
+        <div class="card">
+          <div class="icon">🎥</div>
+          <h3>Fotos e vídeos</h3>
+          <p>Separei tudo em categorias para ficar mais bonito e organizado entre imagens e vídeos.</p>
+          <a class="btn btn-soft" href="#galeria">Ver mídia</a>
+        </div>
 
+        <div class="card">
+          <div class="icon">💌</div>
+          <h3>Mensagem especial</h3>
+          <p>Um lugar para escrever frases românticas, dedicatórias e pequenas lembranças de vocês.</p>
+          <a class="btn btn-soft" href="#momentos">Ler história</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="momentos">
+      <div class="section-title">
+        <h2>Começando nossa história</h2>
+        <p>Uma história de amor feita de encontros especiais, sentimentos sinceros e momentos que merecem ficar guardados para sempre.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <strong>🌷 O começo de tudo</strong>
+          <p>Foi ali que tudo começou a mudar, como se o tempo tivesse escolhido um jeito mais bonito de passar. Entre conversas, sorrisos e pequenos detalhes, nasceu uma conexão rara, daquelas que chegam devagar e, quando a gente percebe, já mora no coração.</p>
+        </div>
+        <div class="timeline-item">
+          <strong>💕 Nosso primeiro momento especial</strong>
+          <p>Desde os primeiros momentos, cada encontro ganhou um brilho diferente. O que parecia simples virou inesquecível, porque quando existe sentimento de verdade, até os instantes mais pequenos se transformam em memórias gigantes.</p>
+        </div>
+        <div class="timeline-item">
+          <strong>✨ Cada foto, uma memória</strong>
+          <p>E assim a história de vocês foi sendo escrita: com carinho, presença, saudade, vontade de estar perto e um amor que foi crescendo sem pressa, mas com profundidade. Este cantinho guarda tudo isso — os sorrisos, os sonhos, as fases, as fotos, os vídeos e a beleza de um amor que merece ser lembrado todos os dias.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="galeria">
+      <div class="section-title">
+        <h2>Galeria de fotos e vídeos</h2>
+        <p>
+          Tudo fica aqui dentro, bem organizado. Dá para separar entre fotos, vídeos e arquivos adicionados depois.
+        </p>
+      </div>
+
+      <div class="gallery-wrap">
+        <div class="gallery-toolbar">
+          <div class="toolbar-group">
+            <button class="pill active" data-filter="all">Tudo</button>
+            <button class="pill" data-filter="foto">Fotos</button>
+            <button class="pill" data-filter="video">Vídeos</button>
+          </div>
+
+          <label class="upload-label">
+            ➕ Adicionar mídia
+            <input type="file" id="mediaUpload" accept="image/*,video/*" multiple>
+          </label>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-item" data-type="foto">
+            <img class="gallery-media" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Momento romântico 1">
+            <div class="gallery-caption">
+              <h4>Nosso momento favorito</h4>
+              <span>Foto especial</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-type="foto">
+            <img class="gallery-media" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Momento romântico 2">
+            <div class="gallery-caption">
+              <h4>Lembrança inesquecível</h4>
+              <span>Foto especial</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-type="video">
+            <video class="gallery-media" controls>
+              <source src="" type="video/mp4">
+            </video>
+            <div class="gallery-caption">
+              <h4>Vídeo do casal</h4>
+              <span>Adicione seu vídeo aqui</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+      <section class="section">
+      <div class="section-title">
+        <h2>Nosso tempo juntos</h2>
+        <p>Um detalhe delicado para deixar a página ainda mais especial.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card" style="text-align:center;">
+          <div class="icon" style="margin:0 auto 16px;">⏳</div>
+          <h3 id="contadorDias">0 dias juntos</h3>
+          <p>Você pode trocar a data no código para contar desde o começo da história de vocês.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div class="icon" style="margin:0 auto 16px;">🎶</div>
+          <h3>Nossa música</h3>
+          <p>Adicione aqui a música especial de vocês para tocar no cantinho do casal.</p>
+          <audio controls style="width:100%; margin-top:8px;">
+            <source src="" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+  <footer>
+    Feito com amor por <span class="heart">Walisson</span> para <span class="heart">Beatriz</span> 💗
+  </footer>
+
+  <script>
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const galleryItems = () => document.querySelectorAll('.gallery-item');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const mediaUpload = document.getElementById('mediaUpload');
+    const photoUpload = document.getElementById('photoUpload');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+
+        galleryItems().forEach(item => {
+          const type = item.dataset.type;
+          item.style.display = filter === 'all' || filter === type ? 'block' : 'none';
+        });
+      });
+    });
+
+    function createGalleryItem(file, type) {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.dataset.type = type;
+
+      const url = URL.createObjectURL(file);
+      let media = '';
+
+      if (type === 'foto') {
+        media = `<img class="gallery-media" src="${url}" alt="${file.name}">`;
+      } else {
+        media = `
+          <video class="gallery-media" controls>
+            <source src="${url}" type="${file.type}">
+          </video>
+        `;
+      }
+
+      item.innerHTML = `
+        ${media}
+        <div class="gallery-caption">
+          <h4>${file.name}</h4>
+          <span>${type === 'foto' ? 'Foto adicionada' : 'Vídeo adicionado'}</span>
+        </div>
+      `;
+
+      galleryGrid.prepend(item);
+    }
+
+    function handleFiles(files) {
+      [...files].forEach(file => {
+        if (file.type.startsWith('image/')) {
+          createGalleryItem(file, 'foto');
+        } else if (file.type.startsWith('video/')) {
+          createGalleryItem(file, 'video');
+        }
+      });
+    }
+
+    mediaUpload.addEventListener('change', (event) => handleFiles(event.target.files));
+    photoUpload.addEventListener('change', (event) => handleFiles(event.target.files));
+
+    const dataInicio = new Date('2026-01-01');
+    const hoje = new Date();
+    const diferenca = hoje - dataInicio;
+    const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+    const contadorDias = document.getElementById('contadorDias');
+    if (contadorDias) {
+      contadorDias.textContent = `${dias} dias juntos`;
+    }
+
+    const heartsContainer = document.getElementById('hearts');
+    const simbolos = ['❤', '💖', '💕', '💗'];
+
+    for (let i = 0; i < 18; i++) {
+      const heart = document.createElement('span');
+      heart.className = 'heart-fall';
+      heart.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 6 + Math.random() * 8 + 's';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      heart.style.fontSize = 14 + Math.random() * 16 + 'px';
+      heartsContainer.appendChild(heart);
+    }
+  </script>
 </body>
 </html>
