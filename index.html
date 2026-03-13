@@ -9,20 +9,42 @@
 
 body{
 font-family:Arial;
+background:linear-gradient(45deg,#ff758c,#ff7eb3);
 text-align:center;
-background:#ffe6ec;
+color:white;
+}
+
+.container{
+margin-top:50px;
 }
 
 h1{
-color:#ff2e63;
+font-size:40px;
+}
+
+.section{
+margin-top:40px;
+background:rgba(255,255,255,0.15);
+padding:20px;
+border-radius:10px;
+width:80%;
+margin-left:auto;
+margin-right:auto;
+}
+
+img{
+width:200px;
+border-radius:10px;
+margin:10px;
 }
 
 button{
 padding:10px;
+border:none;
 background:#ff2e63;
 color:white;
-border:none;
 border-radius:5px;
+cursor:pointer;
 }
 
 </style>
@@ -31,29 +53,108 @@ border-radius:5px;
 
 <body>
 
+<div class="container">
+
 <h1>Wallace ❤️ Beatriz</h1>
 
-<p>Nosso cantinho na internet 💗</p>
+<p>Nosso cantinho especial na internet</p>
 
-<input id="msg" placeholder="Mensagem para Beatriz">
+</div>
 
-<button onclick="enviarMensagem()">Enviar</button>
+<div class="section">
 
-<div id="mensagens"></div>
+<h2>💌 Uma mensagem para você</h2>
+
+<p>
+Beatriz, desde que você apareceu na minha vida tudo ficou mais bonito.
+Seu sorriso ilumina meus dias e sua presença faz meu coração bater diferente.
+Esse site é só um pequeno espaço para guardar nossa história.
+E se depender de mim, nossa história ainda vai ter muitos capítulos.
+</p>
+
+</div>
+
+<div class="section">
+
+<h2>📅 Nosso tempo juntos</h2>
+
+<p id="contador"></p>
+
+</div>
+
+<div class="section">
+
+<h2>📸 Nossas fotos</h2>
+
+<input type="file" id="foto">
+
+<button onclick="adicionarFoto()">Adicionar Foto</button>
+
+<div id="galeria"></div>
+
+</div>
+
+<div class="section">
+
+<h2>❤️ Nossa história</h2>
+
+<p>2026 — Quando nos conhecemos</p>
+<p>Primeira conversa especial</p>
+<p>Primeiro encontro</p>
+<p>E muitos momentos ainda por vir...</p>
+
+</div>
+
+<div class="section">
+
+<h2>🎵 Nossa música</h2>
+
+<audio controls autoplay loop>
+
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+
+</audio>
+
+</div>
 
 <script>
 
-function enviarMensagem(){
+const dataInicio = new Date("2026-01-01")
 
-const texto=document.getElementById("msg").value
+function atualizarContador(){
 
-const area=document.getElementById("mensagens")
+const hoje = new Date()
 
-const p=document.createElement("p")
+const diff = hoje - dataInicio
 
-p.innerText=texto
+const dias = Math.floor(diff/(1000*60*60*24))
 
-area.appendChild(p)
+document.getElementById("contador").innerText =
+"Estamos vivendo essa história há " + dias + " dias ❤️"
+
+}
+
+setInterval(atualizarContador,1000)
+
+function adicionarFoto(){
+
+const input = document.getElementById("foto")
+
+const file = input.files[0]
+
+const reader = new FileReader()
+
+reader.onload = function(e){
+
+const img = document.createElement("img")
+
+img.src = e.target.result
+
+document.getElementById("galeria").appendChild(img)
+
+}
+
+reader.readAsDataURL(file)
 
 }
 
