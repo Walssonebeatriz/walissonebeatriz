@@ -1,388 +1,125 @@
-const supabaseUrl = "https://bpimpktebkbflmyphpxk.supabase.co";
-const supabaseKey = "sb_publishable_XsHR57ojGapxQ23W6ef6Ug_kuhts2pv";
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nossa Galeria ❤️</title>
 
-const filterButtons = document.querySelectorAll("[data-filter]");
-const galleryGrid = document.getElementById("galleryGrid");
-const mediaUpload = document.getElementById("mediaUpload");
-const photoUpload = document.getElementById("photoUpload");
-const backgroundUpload = document.getElementById("backgroundUpload");
-const clearBackgroundBtn = document.getElementById("clearBackgroundBtn");
-const lightbox = document.getElementById("lightbox");
-const lightboxContent = document.getElementById("lightboxContent");
-const lightboxClose = document.getElementById("lightboxClose");
-const musicUpload = document.getElementById("musicUpload");
-const musicPlayer = document.getElementById("musicPlayer");
-const contadorDias = document.getElementById("contadorDias");
+<style>
 
-function galleryItems() {
-  return document.querySelectorAll(".gallery-item");
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(180deg,#fdebf1,#f8e0e8);
+text-align:center;
 }
 
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
-    button.classList.add("active");
-    const filter = button.dataset.filter;
-
-    galleryItems().forEach((item) => {
-      const type = item.dataset.type;
-      item.style.display = filter === "all" || filter === type ? "" : "none";
-    });
-  });
-});
-
-function applyBackground(url) {
-  if (url) {
-    document.body.style.backgroundImage =
-      `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${url}')`;
-  } else {
-    document.body.style.backgroundImage =
-      "linear-gradient(180deg, #fdebf1 0%, #f8e0e8 100%)";
-  }
+header{
+padding:20px;
 }
 
-async function loadSharedBackground() {
-  const { data, error } = await supabase
-    .from("site_config")
-    .select("background_url")
-    .eq("id", 1)
-    .single();
-
-  if (error) {
-    console.error("Erro ao carregar fundo:", error);
-    return;
-  }
-
-  applyBackground(data?.background_url || null);
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:15px;
+padding:20px;
 }
 
-async function uploadBackground(file) {
-  const fileExt = file.name.split(".").pop();
-  const fileName = `background-casal-${Date.now()}.${fileExt}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from("galeria")
-    .upload(fileName, file, { upsert: true });
-
-  if (uploadError) {
-    console.error("Erro no upload do fundo:", uploadError);
-    alert("Não foi possível enviar o plano de fundo.");
-    return;
-  }
-
-  const { data: publicData } = supabase.storage
-    .from("galeria")
-    .getPublicUrl(fileName);
-
-  const publicUrl = publicData.publicUrl;
-
-  const { error: updateError } = await supabase
-    .from("site_config")
-    .upsert({
-      id: 1,
-      background_url: publicUrl
-    });
-
-  if (updateError) {
-    console.error("Erro ao salvar URL do fundo:", updateError);
-    alert("Não foi possível salvar o plano de fundo.");
-    return;
-  }
-
-  applyBackground(publicUrl);
+.gallery-item{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
-async function clearSharedBackground() {
-  const { error } = await supabase
-    .from("site_config")
-    .upsert({
-      id: 1,
-      background_url: null
-    });
-
-  if (error) {
-    console.error("Erro ao remover fundo:", error);
-    alert("Não foi possível remover o fundo.");
-    return;
-  }
-
-  applyBackground(null);
+.gallery-media{
+width:100%;
+display:block;
 }
 
-function activateLightbox(scope = document) {
-  const medias = scope.querySelectorAll
-    ? scope.querySelectorAll(".gallery-media")
-    : [];
-
-  medias.forEach((media) => {
-    media.onclick = () => {
-      if (media.tagName.toLowerCase() === "img") {
-        lightboxContent.innerHTML = `<img src="${media.src}" alt="Imagem em tela cheia">`;
-      } else {
-        const source = media.querySelector("source");
-        const src = source ? source.src : media.currentSrc;
-        lightboxContent.innerHTML = `
-          <video controls autoplay>
-            <source src="${src}" type="video/mp4">
-          </video>
-        `;
-      }
-      lightbox.classList.add("open");
-    };
-  });
+.gallery-caption{
+padding:10px;
+font-size:14px;
 }
 
-function createGalleryItemFromDatabase(itemData, prepend = true) {
-  const item = document.createElement("div");
-  item.className = "gallery-item";
-  item.dataset.type = itemData.type;
-  item.dataset.id = itemData.id;
-  item.dataset.name = itemData.name;
-  item.dataset.url = itemData.file_url;
-
-  let media = "";
-
-  if (itemData.type === "foto") {
-    media = `<img class="gallery-media" src="${itemData.file_url}" alt="${itemData.name}">`;
-  } else {
-    media = `
-      <video class="gallery-media" controls>
-        <source src="${itemData.file_url}" type="video/mp4">
-      </video>
-    `;
-  }
-
-  item.innerHTML = `
-    ${media}
-    <div class="gallery-caption">
-      <h4>${itemData.name}</h4>
-      <span>${itemData.type === "foto" ? "Foto adicionada" : "Vídeo adicionado"}</span>
-    </div>
-    <div class="gallery-actions">
-      <button class="mini-btn delete" type="button">Excluir</button>
-    </div>
-  `;
-
-  if (prepend) {
-    galleryGrid.prepend(item);
-  } else {
-    galleryGrid.appendChild(item);
-  }
-
-  activateLightbox(item);
-  attachCloudDelete(item);
+.gallery-actions{
+padding:10px;
 }
 
-async function uploadGalleryFile(file, type) {
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from("galeria")
-    .upload(fileName, file, { upsert: true });
-
-  if (uploadError) {
-    console.error("Erro ao enviar mídia:", uploadError);
-    alert("Não foi possível enviar a mídia.");
-    return null;
-  }
-
-  const { data: publicData } = supabase.storage
-    .from("galeria")
-    .getPublicUrl(fileName);
-
-  const publicUrl = publicData.publicUrl;
-
-  const { data, error: insertError } = await supabase
-    .from("gallery_items")
-    .insert({
-      name: file.name,
-      type: type,
-      file_url: publicUrl
-    })
-    .select()
-    .single();
-
-  if (insertError) {
-    console.error("Erro ao salvar mídia no banco:", insertError);
-    alert("Não foi possível registrar a mídia.");
-    return null;
-  }
-
-  return data;
+.mini-btn{
+background:#ff6b9d;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
 }
 
-async function loadGalleryFromSupabase() {
-  const { data, error } = await supabase
-    .from("gallery_items")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Erro ao carregar galeria:", error);
-    return;
-  }
-
-  galleryGrid.innerHTML = "";
-
-  data.forEach((item) => {
-    createGalleryItemFromDatabase(item, false);
-  });
+.lightbox{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
 }
 
-async function deleteFileFromStorage(fileUrl) {
-  try {
-    const url = new URL(fileUrl);
-    const pathParts = url.pathname.split("/object/public/galeria/");
-    if (pathParts.length < 2) return;
-
-    const filePath = decodeURIComponent(pathParts[1]);
-
-    await supabase.storage
-      .from("galeria")
-      .remove([filePath]);
-  } catch (error) {
-    console.error("Erro ao remover do storage:", error);
-  }
+.lightbox.open{
+display:flex;
 }
 
-function attachCloudDelete(item) {
-  const deleteBtn = item.querySelector(".mini-btn.delete");
-  if (!deleteBtn) return;
-
-  deleteBtn.addEventListener("click", async () => {
-    const id = item.dataset.id;
-    const fileUrl = item.dataset.url;
-
-    if (!id) return;
-
-    const { error } = await supabase
-      .from("gallery_items")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Erro ao excluir item:", error);
-      alert("Não foi possível excluir.");
-      return;
-    }
-
-    if (fileUrl) {
-      await deleteFileFromStorage(fileUrl);
-    }
-
-    item.remove();
-  });
+#lightboxContent img,
+#lightboxContent video{
+max-width:90vw;
+max-height:90vh;
 }
 
-async function handleFiles(files) {
-  for (const file of [...files]) {
-    let type = null;
-
-    if (file.type.startsWith("image/")) {
-      type = "foto";
-    } else if (file.type.startsWith("video/")) {
-      type = "video";
-    }
-
-    if (!type) continue;
-
-    const savedItem = await uploadGalleryFile(file, type);
-    if (savedItem) {
-      createGalleryItemFromDatabase(savedItem, true);
-    }
-  }
+.heart-fall{
+position:fixed;
+top:-20px;
+animation:fall linear infinite;
 }
 
-if (mediaUpload) {
-  mediaUpload.addEventListener("change", async (event) => {
-    await handleFiles(event.target.files);
-    event.target.value = "";
-  });
+@keyframes fall{
+to{transform:translateY(110vh)}
 }
 
-if (photoUpload) {
-  photoUpload.addEventListener("change", async (event) => {
-    await handleFiles(event.target.files);
-    event.target.value = "";
-  });
-}
+</style>
+</head>
 
-if (backgroundUpload) {
-  backgroundUpload.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    await uploadBackground(file);
-    event.target.value = "";
-  });
-}
+<body>
 
-if (clearBackgroundBtn) {
-  clearBackgroundBtn.addEventListener("click", async () => {
-    await clearSharedBackground();
-  });
-}
+<header>
+<h1>Nossa Galeria ❤️</h1>
+<div id="contadorDias"></div>
+</header>
 
-if (lightboxClose) {
-  lightboxClose.addEventListener("click", () => {
-    lightbox.classList.remove("open");
-    lightboxContent.innerHTML = "";
-  });
-}
+<div style="margin-bottom:15px;">
+<input type="file" id="mediaUpload" multiple>
+<input type="file" id="backgroundUpload">
+<input type="file" id="musicUpload">
+<button id="clearBackgroundBtn">Remover Fundo</button>
+</div>
 
-if (lightbox) {
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) {
-      lightbox.classList.remove("open");
-      lightboxContent.innerHTML = "";
-    }
-  });
-}
+<audio id="musicPlayer" controls autoplay loop></audio>
 
-const dataInicio = new Date("2025-01-01");
-const hoje = new Date();
-const diffMs = hoje.getTime() - dataInicio.getTime();
-const dias = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+<div style="margin-bottom:15px;">
+<button data-filter="all">Todos</button>
+<button data-filter="foto">Fotos</button>
+<button data-filter="video">Vídeos</button>
+</div>
 
-if (contadorDias) {
-  contadorDias.textContent = `${dias} dias juntos`;
-}
+<div id="galleryGrid" class="gallery"></div>
 
-const savedMusic = localStorage.getItem("musicaRomantica");
-if (savedMusic && musicPlayer) {
-  musicPlayer.src = savedMusic;
-}
+<div id="lightbox" class="lightbox">
+<div id="lightboxContent"></div>
+<button id="lightboxClose" style="position:absolute;top:20px;right:20px;">X</button>
+</div>
 
-if (musicUpload) {
-  musicUpload.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+<div id="hearts"></div>
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      localStorage.setItem("musicaRomantica", e.target.result);
-      musicPlayer.src = e.target.result;
-      musicPlayer.play().catch(() => {});
-    };
-    reader.readAsDataURL(file);
-  });
-}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
 
-const heartsContainer = document.getElementById("hearts");
-const simbolos = ["❤", "💖", "💕", "💗"];
-
-for (let i = 0; i < 18; i++) {
-  const heart = document.createElement("span");
-  heart.className = "heart-fall";
-  heart.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = 6 + Math.random() * 8 + "s";
-  heart.style.animationDelay = Math.random() * 5 + "s";
-  heart.style.fontSize = 14 + Math.random() * 16 + "px";
-  heartsContainer.appendChild(heart);
-}
-
-activateLightbox();
-loadSharedBackground();
-loadGalleryFromSupabase();
+</body>
+</html>
