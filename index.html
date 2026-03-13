@@ -273,6 +273,37 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: var(--sombra);
+      position: relative;
+    }
+
+    .gallery-actions {
+      display: flex;
+      gap: 8px;
+      padding: 0 14px 14px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .mini-btn.edit {
+      background: #ffe6ee;
+      color: var(--rosa-escuro);
+    }
+
+    .mini-btn.delete {
+      background: #fff1f4;
+      color: #c63a63;
+    }
+
+    .hidden-input {
+      display: none;
     }
 
     .gallery-media {
@@ -534,9 +565,11 @@
           <div class="icon" style="margin:0 auto 16px;">🎶</div>
           <h3>Nossa música</h3>
           <p>Adicione aqui a música especial de vocês para tocar no cantinho do casal.</p>
-          <audio controls style="width:100%; margin-top:8px;">
-            <source src="" type="audio/mpeg">
-          </audio>
+          <label class="upload-label" style="margin-top:8px; justify-content:center; width:100%;">
+            🎵 Escolher música
+            <input type="file" id="musicUpload" accept="audio/*">
+          </label>
+          <audio id="musicPlayer" controls style="width:100%; margin-top:12px;"></audio>
         </div>
       </div>
     </section>
@@ -570,42 +603,142 @@
       });
     });
 
-    function createGalleryItem(file, type) {
+    function createGalleryItem(file, type, savedUrl = null) {
       const item = document.createElement('div');
       item.className = 'gallery-item';
       item.dataset.type = type;
 
-      const url = URL.createObjectURL(file);
+      const url = savedUrl || URL.createObjectURL(file);
       let media = '';
 
       if (type === 'foto') {
-        media = `<img class="gallery-media" src="${url}" alt="${file.name}">`;
+        media = `<img class="gallery-media" src="${url}" alt="${file ? file.name : 'Foto salva'}">`;
       } else {
         media = `
           <video class="gallery-media" controls>
-            <source src="${url}" type="${file.type}">
+            <source src="${url}" type="${file ? file.type : 'video/mp4'}">
           </video>
         `;
       }
 
+      const itemName = file ? file.name : (type === 'foto' ? 'Foto salva' : 'Vídeo salvo');
+      item.dataset.name = itemName;
+      item.dataset.url = url;
+
       item.innerHTML = `
         ${media}
         <div class="gallery-caption">
-          <h4>${file.name}</h4>
+          <h4>${itemName}</h4>
           <span>${type === 'foto' ? 'Foto adicionada' : 'Vídeo adicionado'}</span>
+        </div>
+        <div class="gallery-actions">
+          <label class="mini-btn edit">
+            Trocar
+            <input class="hidden-input replace-input" type="file" accept="${type === 'foto' ? 'image/*' : 'video/*'}">
+          </label>
+          <button class="mini-btn delete" type="button">Excluir</button>
         </div>
       `;
 
       galleryGrid.prepend(item);
       activateLightbox(item);
+      attachItemActions(item);
+    }
+
+    function saveAllMediaToStorage() {
+      const items = [...document.querySelectorAll('#galleryGrid .gallery-item')].map(item => {
+        const media = item.querySelector('.gallery-media');
+        const isImage = media && media.tagName.toLowerCase() === 'img';
+        const source = isImage ? media.src : (media.querySelector('source')?.src || media.currentSrc || '');
+        return {
+          type: item.dataset.type,
+          name: item.dataset.name || 'Arquivo',
+          dataUrl: source,
+          mimeType: isImage ? 'image/*' : 'video/*'
+        };
+      });
+      localStorage.setItem('midiasRomanticas', JSON.stringify(items));
+    }
+
+    function saveMediaToStorage(file, type) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
+        savedItems.unshift({
+          type,
+          name: file.name,
+          dataUrl: e.target.result,
+          mimeType: file.type
+        });
+        localStorage.setItem('midiasRomanticas', JSON.stringify(savedItems));
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadSavedMedia() {
+      const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
+      savedItems.reverse().forEach(item => {
+        createGalleryItem(
+          { name: item.name, type: item.mimeType },
+          item.type,
+          item.dataUrl
+        );
+      });
+    }
+
+    function attachItemActions(item) {
+      const deleteBtn = item.querySelector('.mini-btn.delete');
+      const replaceInput = item.querySelector('.replace-input');
+
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+          item.remove();
+          saveAllMediaToStorage();
+        });
+      }
+
+      if (replaceInput) {
+        replaceInput.addEventListener('change', (event) => {
+          const newFile = event.target.files[0];
+          if (!newFile) return;
+
+          const expectedType = item.dataset.type === 'foto' ? 'image/' : 'video/';
+          if (!newFile.type.startsWith(expectedType)) return;
+
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const mediaContainer = item.querySelector('.gallery-media');
+            const captionTitle = item.querySelector('.gallery-caption h4');
+            item.dataset.name = newFile.name;
+            item.dataset.url = e.target.result;
+
+            if (item.dataset.type === 'foto') {
+              mediaContainer.outerHTML = `<img class="gallery-media" src="${e.target.result}" alt="${newFile.name}">`;
+            } else {
+              mediaContainer.outerHTML = `
+                <video class="gallery-media" controls>
+                  <source src="${e.target.result}" type="${newFile.type}">
+                </video>
+              `;
+            }
+
+            if (captionTitle) captionTitle.textContent = newFile.name;
+            activateLightbox(item);
+            saveAllMediaToStorage();
+          };
+          reader.readAsDataURL(newFile);
+        });
+      }
     }
 
     function handleFiles(files) {
       [...files].forEach(file => {
         if (file.type.startsWith('image/')) {
           createGalleryItem(file, 'foto');
+          saveMediaToStorage(file, 'foto');
         } else if (file.type.startsWith('video/')) {
           createGalleryItem(file, 'video');
+          saveMediaToStorage(file, 'video');
         }
       });
     }
@@ -638,6 +771,7 @@
     }
 
     activateLightbox();
+    loadSavedMedia();
 
     lightboxClose.addEventListener('click', () => {
       lightbox.classList.remove('open');
@@ -656,6 +790,28 @@
     const contadorDias = document.getElementById('contadorDias');
     if (contadorDias) {
       contadorDias.textContent = `${dias} dias juntos`;
+    }
+
+    const musicUpload = document.getElementById('musicUpload');
+    const musicPlayer = document.getElementById('musicPlayer');
+
+    const savedMusic = localStorage.getItem('musicaRomantica');
+    if (savedMusic && musicPlayer) {
+      musicPlayer.src = savedMusic;
+    }
+
+    if (musicUpload) {
+      musicUpload.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          localStorage.setItem('musicaRomantica', e.target.result);
+          musicPlayer.src = e.target.result;
+          musicPlayer.play().catch(() => {});
+        };
+        reader.readAsDataURL(file);
+      });
     }
 
     const heartsContainer = document.getElementById('hearts');
