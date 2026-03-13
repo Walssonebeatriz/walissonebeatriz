@@ -50,6 +50,8 @@
       max-width: 1150px;
       margin: 0 auto;
       padding: 36px 20px 10px;
+      position: relative;
+      z-index: 2;
     }
 
     .hero-box {
@@ -59,6 +61,7 @@
       padding: 38px 26px;
       box-shadow: var(--sombra);
       border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
     }
 
     .mini {
@@ -126,29 +129,47 @@
       transform: translateY(-2px);
     }
 
-    .background-panel {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: var(--sombra);
-      max-width: 1150px;
-      margin: 0 auto 28px;
-    }
-
-    .background-preview {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 18px;
-      background: #fff6f9;
-      color: #86656d;
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
     .section {
       max-width: 1150px;
       margin: 28px auto;
       padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .background-panel {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 20px;
+      padding: 16px 18px;
+      box-shadow: var(--sombra);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+
+    .mini-bg-title h2 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .mini-bg-title p {
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: #86656d;
+    }
+
+    .background-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .small-upload {
+      padding: 10px 14px;
+      font-size: 0.92rem;
     }
 
     .section-title {
@@ -278,6 +299,7 @@
       border-radius: 999px;
       cursor: pointer;
       font-weight: bold;
+      border: none;
     }
 
     .upload-label input {
@@ -322,10 +344,6 @@
     .mini-btn.delete {
       background: #fff1f4;
       color: #c63a63;
-    }
-
-    .hidden-input {
-      display: none;
     }
 
     .gallery-media {
@@ -384,6 +402,7 @@
     .gallery-caption h4 {
       margin-bottom: 6px;
       font-size: 1rem;
+      word-break: break-word;
     }
 
     .gallery-caption span {
@@ -395,26 +414,14 @@
       text-align: center;
       padding: 26px 15px 36px;
       color: #805660;
+      position: relative;
+      z-index: 2;
     }
 
     .heart {
       color: var(--rosa-escuro);
     }
 
-    .hidden {
-      display: none;
-    }
-
-    @media (max-width: 700px) {
-      .hero-box {
-        padding: 28px 18px;
-      }
-
-      .gallery-media {
-        height: 210px;
-      }
-    }
-  
     .hearts {
       position: fixed;
       inset: 0;
@@ -435,6 +442,20 @@
       to {
         transform: translateY(120vh);
         opacity: 0.2;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .hero-box {
+        padding: 28px 18px;
+      }
+
+      .gallery-media {
+        height: 210px;
+      }
+
+      .background-panel {
+        max-width: 100%;
       }
     }
   </style>
@@ -459,18 +480,20 @@
 
     <section class="section">
       <div class="background-panel">
-        <div class="section-title" style="margin-bottom: 10px;">
-          <h2>Plano de fundo do site</h2>
-          <p>Escolha uma foto de vocês dois para usar como pano de fundo da página.</p>
+        <div class="section-title mini-bg-title" style="margin-bottom: 0;">
+          <h2>Plano de fundo do casal</h2>
+          <p>Escolha uma foto especial para aparecer para vocês dois.</p>
         </div>
 
-        <label class="upload-label">
-          🖼️ Trocar pano de fundo
-          <input type="file" id="backgroundUpload" accept="image/*">
-        </label>
+        <div class="background-controls">
+          <label class="upload-label small-upload">
+            🖼️ Trocar fundo
+            <input type="file" id="backgroundUpload" accept="image/*">
+          </label>
 
-        <div class="background-preview">
-          Quando você escolher uma foto, ela vira o fundo do site neste navegador. Se quiser voltar ao fundo romântico original, é só limpar a imagem.
+          <button class="mini-btn edit" id="clearBackgroundBtn" type="button">
+            Remover fundo
+          </button>
         </div>
       </div>
 
@@ -537,9 +560,8 @@
       <div class="section-title">
         <h2>Galeria de fotos e vídeos</h2>
         <p>
-          Tudo fica aqui dentro, bem organizado. Dá para separar entre fotos, vídeos e arquivos adicionados depois.
+          Tudo fica aqui dentro, bem organizado. Dá para separar entre fotos e vídeos.
         </p>
-        <p style="margin-top:8px; color:#86656d;">As fotos adicionadas ficam salvas neste navegador. Para aparecer para todo mundo no site, a imagem precisa ser colocada no projeto.</p>
       </div>
 
       <div class="gallery-wrap">
@@ -556,38 +578,11 @@
           </label>
         </div>
 
-        <div class="gallery-grid" id="galleryGrid">
-          <div class="gallery-item" data-type="foto">
-            <img class="gallery-media" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Momento romântico 1">
-            <div class="gallery-caption">
-              <h4>Nosso momento favorito</h4>
-              <span>Foto especial</span>
-            </div>
-          </div>
-
-          <div class="gallery-item" data-type="foto">
-            <img class="gallery-media" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Momento romântico 2">
-            <div class="gallery-caption">
-              <h4>Lembrança inesquecível</h4>
-              <span>Foto especial</span>
-            </div>
-          </div>
-
-          <div class="gallery-item" data-type="video">
-            <video class="gallery-media" controls>
-              <source src="" type="video/mp4">
-            </video>
-            <div class="gallery-caption">
-              <h4>Vídeo do casal</h4>
-              <span>Adicione seu vídeo aqui</span>
-            </div>
-          </div>
-        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
       </div>
     </section>
-  </main>
 
-      <section class="section">
+    <section class="section">
       <div class="section-title">
         <h2>Nosso tempo juntos</h2>
         <p>Um detalhe delicado para deixar a página ainda mais especial.</p>
@@ -612,6 +607,7 @@
         </div>
       </div>
     </section>
+  </main>
 
   <footer>
     Feito com amor por <span class="heart">Walisson</span> para <span class="heart">Beatriz</span> 💗
@@ -622,12 +618,27 @@
     <div id="lightboxContent"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
+    const supabaseUrl = "https://bpimpktebkbflmyphpxk.supabase.co";
+    const supabaseKey = "SUA_CHAVE_PUBLICA_AQUI";
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
     const filterButtons = document.querySelectorAll('[data-filter]');
-    const galleryItems = () => document.querySelectorAll('.gallery-item');
     const galleryGrid = document.getElementById('galleryGrid');
     const mediaUpload = document.getElementById('mediaUpload');
     const photoUpload = document.getElementById('photoUpload');
+    const backgroundUpload = document.getElementById('backgroundUpload');
+    const clearBackgroundBtn = document.getElementById('clearBackgroundBtn');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const musicUpload = document.getElementById('musicUpload');
+    const musicPlayer = document.getElementById('musicPlayer');
+
+    function galleryItems() {
+      return document.querySelectorAll('.gallery-item');
+    }
 
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -637,197 +648,102 @@
 
         galleryItems().forEach(item => {
           const type = item.dataset.type;
-          item.style.display = filter === 'all' || filter === type ? 'block' : 'none';
+          item.style.display = (filter === 'all' || filter === type) ? '' : 'none';
         });
       });
     });
 
-    function createGalleryItem(file, type, savedUrl = null) {
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
-      item.dataset.type = type;
-
-      const url = savedUrl || URL.createObjectURL(file);
-      let media = '';
-
-      if (type === 'foto') {
-        media = `<img class="gallery-media" src="${url}" alt="${file ? file.name : 'Foto salva'}">`;
+    function applyBackground(url) {
+      if (url) {
+        document.body.style.backgroundImage =
+          `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${url}')`;
       } else {
-        media = `
-          <video class="gallery-media" controls>
-            <source src="${url}" type="${file ? file.type : 'video/mp4'}">
-          </video>
-        `;
+        document.body.style.backgroundImage =
+          'linear-gradient(180deg, #fdebf1 0%, #f8e0e8 100%)';
       }
-
-      const itemName = file ? file.name : (type === 'foto' ? 'Foto salva' : 'Vídeo salvo');
-      item.dataset.name = itemName;
-      item.dataset.url = url;
-
-      item.innerHTML = `
-        ${media}
-        <div class="gallery-caption">
-          <h4>${itemName}</h4>
-          <span>${type === 'foto' ? 'Foto adicionada' : 'Vídeo adicionado'}</span>
-        </div>
-        <div class="gallery-actions">
-          <label class="mini-btn edit">
-            Trocar
-            <input class="hidden-input replace-input" type="file" accept="${type === 'foto' ? 'image/*' : 'video/*'}">
-          </label>
-          <button class="mini-btn delete" type="button">Excluir</button>
-        </div>
-      `;
-
-      galleryGrid.prepend(item);
-      activateLightbox(item);
-      attachItemActions(item);
     }
 
-    function saveAllMediaToStorage() {
-      const items = [...document.querySelectorAll('#galleryGrid .gallery-item')].map(item => {
-        const media = item.querySelector('.gallery-media');
-        const isImage = media && media.tagName.toLowerCase() === 'img';
-        const source = isImage ? media.src : (media.querySelector('source')?.src || media.currentSrc || '');
-        return {
-          type: item.dataset.type,
-          name: item.dataset.name || 'Arquivo',
-          dataUrl: source,
-          mimeType: isImage ? 'image/*' : 'video/*'
-        };
-      });
-      localStorage.setItem('midiasRomanticas', JSON.stringify(items));
-    }
+    async function loadSharedBackground() {
+      const { data, error } = await supabase
+        .from('site_config')
+        .select('background_url')
+        .eq('id', 1)
+        .single();
 
-    function compressImage(file, callback) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxWidth = 1400;
-          const scale = Math.min(1, maxWidth / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          callback(canvas.toDataURL('image/jpeg', 0.82));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function saveMediaToStorage(file, type) {
-      if (type === 'video') {
-        alert('Vídeos grandes não ficam salvos no GitHub Pages só com esse sistema. Para vídeos, o ideal é colocar o arquivo direto no projeto do site.');
+      if (error) {
+        console.error('Erro ao carregar fundo:', error);
         return;
       }
 
-      compressImage(file, function(compressedDataUrl) {
-        try {
-          const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
-          savedItems.unshift({
-            type,
-            name: file.name,
-            dataUrl: compressedDataUrl,
-            mimeType: 'image/jpeg'
-          });
-          localStorage.setItem('midiasRomanticas', JSON.stringify(savedItems));
-        } catch (error) {
-          alert('A foto ficou grande demais para salvar no navegador. Tente usar uma imagem menor.');
-          console.error(error);
-        }
-      });
+      applyBackground(data?.background_url || null);
     }
 
-    function loadSavedMedia() {
-      const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
-      savedItems.reverse().forEach(item => {
-        createGalleryItem(
-          { name: item.name, type: item.mimeType },
-          item.type,
-          item.dataUrl
-        );
-      });
-    }
+    async function uploadBackground(file) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `background-casal-${Date.now()}.${fileExt}`;
 
-    function attachItemActions(item) {
-      const deleteBtn = item.querySelector('.mini-btn.delete');
-      const replaceInput = item.querySelector('.replace-input');
+      const { error: uploadError } = await supabase.storage
+        .from('backgrounds')
+        .upload(fileName, file, { upsert: true });
 
-      if (deleteBtn) {
-        deleteBtn.addEventListener('click', () => {
-          item.remove();
-          saveAllMediaToStorage();
-        });
+      if (uploadError) {
+        console.error('Erro no upload do fundo:', uploadError);
+        alert('Não foi possível enviar o plano de fundo.');
+        return;
       }
 
-      if (replaceInput) {
-        replaceInput.addEventListener('change', (event) => {
-          const newFile = event.target.files[0];
-          if (!newFile) return;
+      const { data: publicData } = supabase.storage
+        .from('backgrounds')
+        .getPublicUrl(fileName);
 
-          const expectedType = item.dataset.type === 'foto' ? 'image/' : 'video/';
-          if (!newFile.type.startsWith(expectedType)) return;
+      const publicUrl = publicData.publicUrl;
 
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const mediaContainer = item.querySelector('.gallery-media');
-            const captionTitle = item.querySelector('.gallery-caption h4');
-            item.dataset.name = newFile.name;
-            item.dataset.url = e.target.result;
-
-            if (item.dataset.type === 'foto') {
-              mediaContainer.outerHTML = `<img class="gallery-media" src="${e.target.result}" alt="${newFile.name}">`;
-            } else {
-              mediaContainer.outerHTML = `
-                <video class="gallery-media" controls>
-                  <source src="${e.target.result}" type="${newFile.type}">
-                </video>
-              `;
-            }
-
-            if (captionTitle) captionTitle.textContent = newFile.name;
-            activateLightbox(item);
-            saveAllMediaToStorage();
-          };
-          reader.readAsDataURL(newFile);
+      const { error: updateError } = await supabase
+        .from('site_config')
+        .upsert({
+          id: 1,
+          background_url: publicUrl
         });
+
+      if (updateError) {
+        console.error('Erro ao salvar URL do fundo:', updateError);
+        alert('Não foi possível salvar o plano de fundo.');
+        return;
       }
+
+      applyBackground(publicUrl);
     }
 
-    function handleFiles(files) {
-      [...files].forEach(file => {
-        if (file.type.startsWith('image/')) {
-          createGalleryItem(file, 'foto');
-          saveMediaToStorage(file, 'foto');
-        } else if (file.type.startsWith('video/')) {
-          createGalleryItem(file, 'video');
-          saveMediaToStorage(file, 'video');
-        }
-      });
+    async function clearSharedBackground() {
+      const { error } = await supabase
+        .from('site_config')
+        .upsert({
+          id: 1,
+          background_url: null
+        });
+
+      if (error) {
+        console.error('Erro ao remover fundo:', error);
+        alert('Não foi possível remover o fundo.');
+        return;
+      }
+
+      applyBackground(null);
     }
-
-    mediaUpload.addEventListener('change', (event) => handleFiles(event.target.files));
-    photoUpload.addEventListener('change', (event) => handleFiles(event.target.files));
-
-    const dataInicio = new Date('2026-01-01');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxContent = document.getElementById('lightboxContent');
-    const lightboxClose = document.getElementById('lightboxClose');
 
     function activateLightbox(scope = document) {
       const medias = scope.querySelectorAll ? scope.querySelectorAll('.gallery-media') : [];
+
       medias.forEach(media => {
         media.onclick = () => {
           if (media.tagName.toLowerCase() === 'img') {
             lightboxContent.innerHTML = `<img src="${media.src}" alt="Imagem em tela cheia">`;
           } else {
             const source = media.querySelector('source');
+            const src = source ? source.src : media.currentSrc;
             lightboxContent.innerHTML = `
               <video controls autoplay>
-                <source src="${source ? source.src : media.currentSrc}" type="video/mp4">
+                <source src="${src}" type="video/mp4">
               </video>
             `;
           }
@@ -836,51 +752,221 @@
       });
     }
 
-    activateLightbox();
-    loadSavedMedia();
+    function createGalleryItemFromDatabase(itemData, prepend = true) {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.dataset.type = itemData.type;
+      item.dataset.id = itemData.id;
+      item.dataset.name = itemData.name;
+      item.dataset.url = itemData.file_url;
 
-    lightboxClose.addEventListener('click', () => {
-      lightbox.classList.remove('open');
-      lightboxContent.innerHTML = '';
-    });
+      let media = '';
 
-    lightbox.addEventListener('click', (event) => {
-      if (event.target === lightbox) {
-        lightbox.classList.remove('open');
-        lightboxContent.innerHTML = '';
+      if (itemData.type === 'foto') {
+        media = `<img class="gallery-media" src="${itemData.file_url}" alt="${itemData.name}">`;
+      } else {
+        media = `
+          <video class="gallery-media" controls>
+            <source src="${itemData.file_url}" type="video/mp4">
+          </video>
+        `;
       }
-    });
-    const hoje = new Date();
-    const diferenca = hoje - dataInicio;
-    const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-    const contadorDias = document.getElementById('contadorDias');
-    if (contadorDias) {
-      contadorDias.textContent = `${dias} dias juntos`;
+
+      item.innerHTML = `
+        ${media}
+        <div class="gallery-caption">
+          <h4>${itemData.name}</h4>
+          <span>${itemData.type === 'foto' ? 'Foto adicionada' : 'Vídeo adicionado'}</span>
+        </div>
+        <div class="gallery-actions">
+          <button class="mini-btn delete" type="button">Excluir</button>
+        </div>
+      `;
+
+      if (prepend) {
+        galleryGrid.prepend(item);
+      } else {
+        galleryGrid.appendChild(item);
+      }
+
+      activateLightbox(item);
+      attachCloudDelete(item);
     }
 
-    const backgroundUpload = document.getElementById('backgroundUpload');
-    const savedBackground = localStorage.getItem('fundoRomantico');
+    async function uploadGalleryFile(file, type) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
 
-    if (savedBackground) {
-      document.body.style.backgroundImage = `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${savedBackground}')`;
+      const { error: uploadError } = await supabase.storage
+        .from('midias')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        console.error('Erro ao enviar mídia:', uploadError);
+        alert('Não foi possível enviar a mídia.');
+        return null;
+      }
+
+      const { data: publicData } = supabase.storage
+        .from('midias')
+        .getPublicUrl(fileName);
+
+      const publicUrl = publicData.publicUrl;
+
+      const { data, error: insertError } = await supabase
+        .from('gallery_items')
+        .insert({
+          name: file.name,
+          type: type,
+          file_url: publicUrl
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Erro ao salvar mídia no banco:', insertError);
+        alert('Não foi possível registrar a mídia.');
+        return null;
+      }
+
+      return data;
     }
 
-    if (backgroundUpload) {
-      backgroundUpload.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+    async function loadGalleryFromSupabase() {
+      const { data, error } = await supabase
+        .from('gallery_items')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          localStorage.setItem('fundoRomantico', e.target.result);
-          document.body.style.backgroundImage = `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${e.target.result}')`;
-        };
-        reader.readAsDataURL(file);
+      if (error) {
+        console.error('Erro ao carregar galeria:', error);
+        return;
+      }
+
+      galleryGrid.innerHTML = '';
+
+      data.forEach(item => {
+        createGalleryItemFromDatabase(item, false);
       });
     }
 
-    const musicUpload = document.getElementById('musicUpload');
-    const musicPlayer = document.getElementById('musicPlayer');
+    async function deleteFileFromStorage(fileUrl) {
+      try {
+        const url = new URL(fileUrl);
+        const pathParts = url.pathname.split('/object/public/midias/');
+        if (pathParts.length < 2) return;
+        const filePath = decodeURIComponent(pathParts[1]);
+
+        await supabase.storage
+          .from('midias')
+          .remove([filePath]);
+      } catch (error) {
+        console.error('Erro ao remover do storage:', error);
+      }
+    }
+
+    function attachCloudDelete(item) {
+      const deleteBtn = item.querySelector('.mini-btn.delete');
+      if (!deleteBtn) return;
+
+      deleteBtn.addEventListener('click', async () => {
+        const id = item.dataset.id;
+        const fileUrl = item.dataset.url;
+
+        if (!id) return;
+
+        const { error } = await supabase
+          .from('gallery_items')
+          .delete()
+          .eq('id', id);
+
+        if (error) {
+          console.error('Erro ao excluir item:', error);
+          alert('Não foi possível excluir.');
+          return;
+        }
+
+        if (fileUrl) {
+          await deleteFileFromStorage(fileUrl);
+        }
+
+        item.remove();
+      });
+    }
+
+    async function handleFiles(files) {
+      for (const file of [...files]) {
+        let type = null;
+
+        if (file.type.startsWith('image/')) {
+          type = 'foto';
+        } else if (file.type.startsWith('video/')) {
+          type = 'video';
+        }
+
+        if (!type) continue;
+
+        const savedItem = await uploadGalleryFile(file, type);
+        if (savedItem) {
+          createGalleryItemFromDatabase(savedItem, true);
+        }
+      }
+    }
+
+    if (mediaUpload) {
+      mediaUpload.addEventListener('change', async (event) => {
+        await handleFiles(event.target.files);
+        event.target.value = '';
+      });
+    }
+
+    if (photoUpload) {
+      photoUpload.addEventListener('change', async (event) => {
+        await handleFiles(event.target.files);
+        event.target.value = '';
+      });
+    }
+
+    if (backgroundUpload) {
+      backgroundUpload.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        await uploadBackground(file);
+        event.target.value = '';
+      });
+    }
+
+    if (clearBackgroundBtn) {
+      clearBackgroundBtn.addEventListener('click', async () => {
+        await clearSharedBackground();
+      });
+    }
+
+    if (lightboxClose) {
+      lightboxClose.addEventListener('click', () => {
+        lightbox.classList.remove('open');
+        lightboxContent.innerHTML = '';
+      });
+    }
+
+    if (lightbox) {
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+          lightbox.classList.remove('open');
+          lightboxContent.innerHTML = '';
+        }
+      });
+    }
+
+    const dataInicio = new Date('2025-01-01');
+    const hoje = new Date();
+    const diffMs = hoje.getTime() - dataInicio.getTime();
+    const dias = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+    const contadorDias = document.getElementById('contadorDias');
+
+    if (contadorDias) {
+      contadorDias.textContent = `${dias} dias juntos`;
+    }
 
     const savedMusic = localStorage.getItem('musicaRomantica');
     if (savedMusic && musicPlayer) {
@@ -891,6 +977,7 @@
       musicUpload.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (!file) return;
+
         const reader = new FileReader();
         reader.onload = function(e) {
           localStorage.setItem('musicaRomantica', e.target.result);
@@ -914,15 +1001,9 @@
       heart.style.fontSize = 14 + Math.random() * 16 + 'px';
       heartsContainer.appendChild(heart);
     }
+
+    loadSharedBackground();
+    loadGalleryFromSupabase();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<script>
-const supabaseUrl = "https://bpimpktebkbflmyphpxk.supabase.co";
-
-const supabaseKey = "sb_publishable_XsHR57ojGapxQ23W6ef6Ug_kuhts2pv";
-
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-</script>
 </body>
 </html>
