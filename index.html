@@ -25,6 +25,9 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: linear-gradient(180deg, #fdebf1 0%, #f8e0e8 100%);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--texto);
       min-height: 100vh;
     }
@@ -121,6 +124,25 @@
 
     .btn-soft:hover {
       transform: translateY(-2px);
+    }
+
+    .background-panel {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--sombra);
+      max-width: 1150px;
+      margin: 0 auto 28px;
+    }
+
+    .background-preview {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #fff6f9;
+      color: #86656d;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
 
     .section {
@@ -436,6 +458,22 @@
     </section>
 
     <section class="section">
+      <div class="background-panel">
+        <div class="section-title" style="margin-bottom: 10px;">
+          <h2>Plano de fundo do site</h2>
+          <p>Escolha uma foto de vocês dois para usar como pano de fundo da página.</p>
+        </div>
+
+        <label class="upload-label">
+          🖼️ Trocar pano de fundo
+          <input type="file" id="backgroundUpload" accept="image/*">
+        </label>
+
+        <div class="background-preview">
+          Quando você escolher uma foto, ela vira o fundo do site neste navegador. Se quiser voltar ao fundo romântico original, é só limpar a imagem.
+        </div>
+      </div>
+
       <div class="section-title">
         <h2>Caixinhas da tela inicial</h2>
         <p>
@@ -818,6 +856,27 @@
     const contadorDias = document.getElementById('contadorDias');
     if (contadorDias) {
       contadorDias.textContent = `${dias} dias juntos`;
+    }
+
+    const backgroundUpload = document.getElementById('backgroundUpload');
+    const savedBackground = localStorage.getItem('fundoRomantico');
+
+    if (savedBackground) {
+      document.body.style.backgroundImage = `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${savedBackground}')`;
+    }
+
+    if (backgroundUpload) {
+      backgroundUpload.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          localStorage.setItem('fundoRomantico', e.target.result);
+          document.body.style.backgroundImage = `linear-gradient(rgba(253, 235, 241, 0.72), rgba(248, 224, 232, 0.78)), url('${e.target.result}')`;
+        };
+        reader.readAsDataURL(file);
+      });
     }
 
     const musicUpload = document.getElementById('musicUpload');
