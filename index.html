@@ -501,6 +501,7 @@
         <p>
           Tudo fica aqui dentro, bem organizado. Dá para separar entre fotos, vídeos e arquivos adicionados depois.
         </p>
+        <p style="margin-top:8px; color:#86656d;">As fotos adicionadas ficam salvas neste navegador. Para aparecer para todo mundo no site, a imagem precisa ser colocada no projeto.</p>
       </div>
 
       <div class="gallery-wrap">
@@ -660,19 +661,46 @@
       localStorage.setItem('midiasRomanticas', JSON.stringify(items));
     }
 
-    function saveMediaToStorage(file, type) {
+    function compressImage(file, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
-        savedItems.unshift({
-          type,
-          name: file.name,
-          dataUrl: e.target.result,
-          mimeType: file.type
-        });
-        localStorage.setItem('midiasRomanticas', JSON.stringify(savedItems));
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxWidth = 1400;
+          const scale = Math.min(1, maxWidth / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    function saveMediaToStorage(file, type) {
+      if (type === 'video') {
+        alert('Vídeos grandes não ficam salvos no GitHub Pages só com esse sistema. Para vídeos, o ideal é colocar o arquivo direto no projeto do site.');
+        return;
+      }
+
+      compressImage(file, function(compressedDataUrl) {
+        try {
+          const savedItems = JSON.parse(localStorage.getItem('midiasRomanticas') || '[]');
+          savedItems.unshift({
+            type,
+            name: file.name,
+            dataUrl: compressedDataUrl,
+            mimeType: 'image/jpeg'
+          });
+          localStorage.setItem('midiasRomanticas', JSON.stringify(savedItems));
+        } catch (error) {
+          alert('A foto ficou grande demais para salvar no navegador. Tente usar uma imagem menor.');
+          console.error(error);
+        }
+      });
     }
 
     function loadSavedMedia() {
