@@ -281,6 +281,46 @@
       object-fit: cover;
       display: block;
       background: #f4dce4;
+      cursor: pointer;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(37, 17, 24, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img,
+    .lightbox video {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      background: #fff;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: none;
+      background: #fff;
+      color: var(--rosa-escuro);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: var(--sombra);
     }
 
     .gallery-caption {
@@ -354,12 +394,8 @@
     <section class="hero" id="inicio">
       <div class="hero-box">
         <div class="mini">Nosso cantinho especial</div>
-        <h1>Começando a sua história de amor...</h1>
-        <p>
-          Aqui ficam guardados os sorrisos, os abraços, as surpresas, os vídeos engraçados,
-          as fotos favoritas e cada lembrança que faz o coração bater mais forte.
-          Um espaço romântico, leve e cheio de vocês.
-        </p>
+        <h1>Começo da nossa história</h1>
+        <p>Entre mensagens bobas, sorrisos soltos e momentos que chegaram sem avisar, nasceu algo lindo. E foi assim, em pouco tempo, que o começo da nossa história virou um lugar cheio de carinho, lembranças e amor.</p>
 
         <div class="hero-actions">
           <a class="btn btn-primary" href="#galeria">📷 Ver fotos</a>
@@ -380,7 +416,6 @@
         <div class="card">
           <div class="icon">📸</div>
           <h3>Adicionar fotos</h3>
-          <p>Escolha novas imagens e elas aparecem na galeria logo abaixo, organizadas no site.</p>
           <label class="upload-label">
             ➕ Escolher fotos
             <input type="file" id="photoUpload" accept="image/*" multiple>
@@ -390,21 +425,18 @@
         <div class="card">
           <div class="icon">🖼️</div>
           <h3>Ver fotos</h3>
-          <p>Ao clicar aqui, a pessoa é levada para a parte da galeria onde as memórias ficam guardadas.</p>
           <a class="btn btn-primary" href="#galeria">Abrir galeria</a>
         </div>
 
         <div class="card">
           <div class="icon">🎥</div>
           <h3>Fotos e vídeos</h3>
-          <p>Separei tudo em categorias para ficar mais bonito e organizado entre imagens e vídeos.</p>
           <a class="btn btn-soft" href="#galeria">Ver mídia</a>
         </div>
 
         <div class="card">
           <div class="icon">💌</div>
           <h3>Mensagem especial</h3>
-          <p>Um lugar para escrever frases românticas, dedicatórias e pequenas lembranças de vocês.</p>
           <a class="btn btn-soft" href="#momentos">Ler história</a>
         </div>
       </div>
@@ -513,6 +545,11 @@
     Feito com amor por <span class="heart">Walisson</span> para <span class="heart">Beatriz</span> 💗
   </footer>
 
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">×</button>
+    <div id="lightboxContent"></div>
+  </div>
+
   <script>
     const filterButtons = document.querySelectorAll('[data-filter]');
     const galleryItems = () => document.querySelectorAll('.gallery-item');
@@ -560,6 +597,7 @@
       `;
 
       galleryGrid.prepend(item);
+      activateLightbox(item);
     }
 
     function handleFiles(files) {
@@ -576,6 +614,42 @@
     photoUpload.addEventListener('change', (event) => handleFiles(event.target.files));
 
     const dataInicio = new Date('2026-01-01');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    function activateLightbox(scope = document) {
+      const medias = scope.querySelectorAll ? scope.querySelectorAll('.gallery-media') : [];
+      medias.forEach(media => {
+        media.onclick = () => {
+          if (media.tagName.toLowerCase() === 'img') {
+            lightboxContent.innerHTML = `<img src="${media.src}" alt="Imagem em tela cheia">`;
+          } else {
+            const source = media.querySelector('source');
+            lightboxContent.innerHTML = `
+              <video controls autoplay>
+                <source src="${source ? source.src : media.currentSrc}" type="video/mp4">
+              </video>
+            `;
+          }
+          lightbox.classList.add('open');
+        };
+      });
+    }
+
+    activateLightbox();
+
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      lightboxContent.innerHTML = '';
+    });
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        lightbox.classList.remove('open');
+        lightboxContent.innerHTML = '';
+      }
+    });
     const hoje = new Date();
     const diferenca = hoje - dataInicio;
     const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
