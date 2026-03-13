@@ -55,7 +55,7 @@
     }
 
     .hero-box {
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.82);
       backdrop-filter: blur(4px);
       border-radius: 28px;
       padding: 38px 26px;
@@ -142,23 +142,23 @@
       border-radius: 20px;
       padding: 16px 18px;
       box-shadow: var(--sombra);
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto 28px;
       text-align: center;
     }
 
-    .mini-bg-title h2 {
+    .background-panel h2 {
       font-size: 1.2rem;
       margin-bottom: 4px;
     }
 
-    .mini-bg-title p {
+    .background-panel p {
       font-size: 0.92rem;
       line-height: 1.45;
       color: #86656d;
     }
 
-    .background-controls {
+    .background-actions {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -480,12 +480,10 @@
 
     <section class="section">
       <div class="background-panel">
-        <div class="section-title mini-bg-title" style="margin-bottom: 0;">
-          <h2>Plano de fundo do casal</h2>
-          <p>Escolha uma foto especial para aparecer para vocês dois.</p>
-        </div>
+        <h2>Plano de fundo do casal</h2>
+        <p>Escolha uma foto especial para aparecer para vocês dois.</p>
 
-        <div class="background-controls">
+        <div class="background-actions">
           <label class="upload-label small-upload">
             🖼️ Trocar fundo
             <input type="file" id="backgroundUpload" accept="image/*">
@@ -618,10 +616,10 @@
     <div id="lightboxContent"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "https://bpimpktebkbflmyphpxk.supabase.co";
-    const supabaseKey = "SUA_CHAVE_PUBLICA_AQUI";
+    const supabaseKey = "sb_publishable_XsHR57ojGapxQ23W6ef6Ug_kuhts2pv";
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     const filterButtons = document.querySelectorAll('[data-filter]');
@@ -799,7 +797,7 @@
 
       const { error: uploadError } = await supabase.storage
         .from('midias')
-        .upload(fileName, file);
+        .upload(fileName, file, { upsert: true });
 
       if (uploadError) {
         console.error('Erro ao enviar mídia:', uploadError);
@@ -1002,6 +1000,7 @@
       heartsContainer.appendChild(heart);
     }
 
+    activateLightbox();
     loadSharedBackground();
     loadGalleryFromSupabase();
   </script>
